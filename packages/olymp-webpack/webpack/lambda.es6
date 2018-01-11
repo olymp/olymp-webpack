@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (
   config,
-  { folder, target, appRoot, entry, env, isDev, serverlessYml }
+  { folder, target, appRoot, entry, env, isDev, serverlessYml, port }
 ) => {
   if (target === 'lambda') {
     config.plugins.push(
@@ -24,7 +24,8 @@ module.exports = (
       config.plugins.push(
         new WebpackShellPlugin({
           onBuildEnd: [
-            `cd ./.dev/lambda && ${envStr} sls offline start --port 4010`
+            `cd ./.dev/lambda && ${envStr} sls offline start --port ${port ||
+              3000}`
           ],
           safe: true
         })
