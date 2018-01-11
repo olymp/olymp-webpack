@@ -85,7 +85,6 @@ exports.dev = (options, port) => {
   if (!Array.isArray(options)) {
     options = [options];
   }
-  console.log(options);
   port = parseInt(`${port}`, 10);
   const watch = {
     aggregateTimeout: 300,

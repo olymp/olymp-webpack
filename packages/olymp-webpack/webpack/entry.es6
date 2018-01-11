@@ -20,7 +20,7 @@ module.exports = (
     } else {
       config.entry.app = [
         'babel-polyfill',
-        'olymp-webpack-pwa/offline'
+        'olymp-webpack-pwa/offline',
         entry || 'olymp-webpack-pwa/entry'
       ];
     }

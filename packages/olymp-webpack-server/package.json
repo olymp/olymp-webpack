@@ -18,5 +18,8 @@
     "isomorphic-fetch": "^2.2.1",
     "source-map-support": "^0.5.0",
     "ua-parser-js": "^0.7.17"
+  },
+  "devDependencies": {
+    "webpack": "^3.10.0"
   }
 }

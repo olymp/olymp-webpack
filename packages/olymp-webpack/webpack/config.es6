@@ -106,11 +106,7 @@ module.exports = ({
         }, {}),
         ...allPackages.reduce((obj, item) => {
           // get all folders in src and create 'olymp-xxx' alias
-          if (item === 'core') {
-            obj.olymp = path.resolve(topFolder, item);
-          } else {
-            obj[`olymp-${item}`] = path.resolve(topFolder, item);
-          }
+          obj[item] = path.resolve(topFolder, item);
           return obj;
         }, {}),
         ...alias

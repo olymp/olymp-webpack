@@ -11,9 +11,8 @@ module.exports = (config, options) => {
     appRoot,
     target,
     folder,
-    transform = {},
+    transform = {}
   } = options;
-
   if (isProd && isWeb) {
     // config.plugins.push(new LodashModuleReplacementPlugin()),
     config.plugins.push(
@@ -40,17 +39,17 @@ module.exports = (config, options) => {
           compress: {
             unused: true,
             drop_debugger: true,
-            dead_code: true,
+            dead_code: true
             // drop_console: true,
             // ecma: 8,
           },
           output: {
             comments: false,
-            beautify: false,
+            beautify: false
             // ecma: 8,
-          },
-        },
-      }),
+          }
+        }
+      })
     );
   }
 
@@ -58,8 +57,8 @@ module.exports = (config, options) => {
     transform,
     isDev,
     isNode,
-    isProd,
-  })
+    isProd
+  });
 
   if (isDev) {
     config.module.rules.push({
@@ -68,26 +67,21 @@ module.exports = (config, options) => {
         {
           loader: 'cache-loader',
           options: {
-            cacheDirectory: resolve(
-              appRoot,
-              folder,
-              'cache',
-              `${target}-babel`,
-            ),
-          },
+            cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-babel`)
+          }
         },
         {
           loader: 'babel-loader',
-          options: babelOptions,
-        },
+          options: babelOptions
+        }
       ],
       include: [
         // path.resolve(appRoot, 'server'),
         // path.resolve(olympRoot, 'graphql'),
         resolve(appRoot, 'app'),
         resolve(appRoot, 'electron'),
-        resolve(appRoot, 'server'),
-      ],
+        resolve(appRoot, 'server')
+      ]
     });
   } else {
     config.module.rules.push({
@@ -96,26 +90,21 @@ module.exports = (config, options) => {
         {
           loader: 'cache-loader',
           options: {
-            cacheDirectory: resolve(
-              appRoot,
-              folder,
-              'cache',
-              `${target}-babel`,
-            ),
-          },
+            cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-babel`)
+          }
         },
         {
           loader: 'babel-loader',
-          options: babelOptions,
-        },
+          options: babelOptions
+        }
       ],
       include: [
         // path.resolve(appRoot, 'server'),
         // path.resolve(olympRoot, 'graphql'),
         resolve(appRoot, 'app'),
         resolve(appRoot, 'electron'),
-        resolve(appRoot, 'server'),
-      ],
+        resolve(appRoot, 'server')
+      ]
     });
   }
 
