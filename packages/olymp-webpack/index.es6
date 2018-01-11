@@ -99,7 +99,10 @@ exports.dev = (options, port) => {
         ...olymprc,
         ...config,
         mode,
-        port: config.target === 'node' ? port + 1 : port,
+        port:
+          config.target === 'node' || config.target === 'lambda'
+            ? port + 1
+            : port,
         isSSR: !config.serverless && config.ssr !== false,
         isServerless: config.serverless || isServerless
       })

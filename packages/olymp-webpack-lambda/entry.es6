@@ -1,6 +1,3 @@
-require('dotenv').config();
-
-import 'babel-polyfill';
 import http from 'http';
 import app from './express';
 
@@ -21,7 +18,7 @@ if (module.hot) {
 
 process.on('uncaughtException', err => {
   console.error(
-    `${new Date().toUTCString()} uncaughtException: ${err.message}`,
+    `${new Date().toUTCString()} uncaughtException: ${err.message}`
   );
   console.error(err.stack);
   process.exit(1);

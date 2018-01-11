@@ -21,6 +21,7 @@ module.exports = (
       .reduce((result, key) => [...result, `${key}="${env[key]}"`], [])
       .join(' ');
     if (isDev) {
+      console.log(port);
       config.plugins.push(
         new WebpackShellPlugin({
           onBuildEnd: [
