@@ -2,12 +2,17 @@ const path = require('path');
 const fs = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-module.exports = (config, { folder, target, appRoot, entry, env, isDev }) => {
+module.exports = (
+  config,
+  { folder, target, appRoot, entry, env, isDev, serverlessYml }
+) => {
   if (target === 'lambda') {
     config.plugins.push(
       new CopyWebpackPlugin([
         {
-          from: path.resolve(path.dirname(entry), 'serverless.yml'),
+          from:
+            serverlessYml ||
+            path.resolve(path.dirname(entry), 'serverless.yml'),
           to: path.resolve(appRoot, folder, target.split('-')[0])
         }
       ])

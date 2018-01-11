@@ -27,37 +27,43 @@ module.exports = (
   } else if (isElectronRenderer) {
     if (isDev) {
       config.entry.app = [
+        'babel-polyfill',
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
         config.entry || 'olymp-webpack-electron/entry'
       ];
     } else {
-      config.entry.app = [entry || 'olymp-webpack-electron/entry'];
+      config.entry.app = [
+        'babel-polyfill',
+        entry || 'olymp-webpack-electron/entry'
+      ];
     }
   } else if (isElectronMain) {
     if (isDev) {
       config.entry.main = [
+        'babel-polyfill',
         'webpack/hot/poll?1000',
         entry || 'olymp-webpack-electron/main'
       ];
     } else {
-      config.entry.main = [entry || 'olymp-electron/main'];
+      config.entry.main = ['babel-polyfill', entry || 'olymp-electron/main'];
     }
   } else if (target === 'lambda') {
     if (isDev) {
-      config.entry.app = [entry || 'olymp-server/entry'];
+      config.entry.app = ['babel-polyfill', entry || 'olymp-server/entry'];
     } else {
-      config.entry.app = [entry || 'olymp-server/entry'];
+      config.entry.app = ['babel-polyfill', entry || 'olymp-server/entry'];
     }
   } else if (isNode) {
     if (isDev) {
       config.entry.app = [
+        'babel-polyfill',
         'webpack/hot/poll?1000',
         entry || 'olymp-server/entry'
       ];
     } else {
-      config.entry.app = [entry || 'olymp-server/entry'];
+      config.entry.app = ['babel-polyfill', entry || 'olymp-server/entry'];
     }
   }
   return config;
