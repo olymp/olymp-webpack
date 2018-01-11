@@ -64,7 +64,7 @@ module.exports = ({
     isLinked,
     paths,
     port,
-    ...rest,
+    ...rest
   };
 
   const isVerbose = true;
@@ -82,13 +82,13 @@ module.exports = ({
       modules: isVerbose,
       reasons: isDev,
       timings: true,
-      version: isVerbose,
+      version: isVerbose
     },
     resolve: {
       extensions: ['.js'],
       modules: [
         path.resolve(appRoot, 'node_modules'),
-        path.resolve(appRoot, 'app'),
+        path.resolve(appRoot, 'app')
       ],
       alias: {
         __app__: path.resolve(__dirname, '..', 'noop'),
@@ -113,44 +113,44 @@ module.exports = ({
           }
           return obj;
         }, {}),
-        ...alias,
-      },
+        ...alias
+      }
     },
     resolveLoader: {
-      modules: [path.resolve(appRoot, 'node_modules')],
+      modules: [path.resolve(appRoot, 'node_modules')]
     },
     module: {
       rules: [
         {
           test: /\.html$/,
-          loader: 'file-loader?name=[name].[ext]',
+          loader: 'file-loader?name=[name].[ext]'
         },
         {
           test: /\.(jpg|jpeg|png|gif|eot|ttf|woff|woff2|svg)$/,
           loader: 'url-loader',
           options: {
-            limit: 20000,
-          },
+            limit: 20000
+          }
         },
         {
           test: /\.(txt|md|pug)$/,
-          loader: 'raw-loader',
+          loader: 'raw-loader'
         },
         {
           test: /\.json$/,
-          loader: 'json-loader',
+          loader: 'json-loader'
         },
         {
           test: /\.flow$/,
-          loader: 'ignore-loader',
-        },
-      ],
+          loader: 'ignore-loader'
+        }
+      ]
     },
     output: {
       publicPath: isProd ? '/' : `http://localhost:${port}/`,
-      path: path.resolve(appRoot, folder, target.split('-')[0]),
+      path: path.resolve(appRoot, folder, target.split('-')[0])
     },
-    entry: {},
+    entry: {}
   };
 
   // inline-source-map for web-dev
@@ -175,7 +175,7 @@ module.exports = ({
       process: false,
       Buffer: false,
       __filename: false,
-      __dirname: false,
+      __dirname: false
     };
     config.output.libraryTarget = 'commonjs2';
   } else if (isElectronMain) {
@@ -187,7 +187,7 @@ module.exports = ({
       process: false,
       Buffer: false,
       __dirname: false,
-      __filename: false,
+      __filename: false
     };
     config.output.libraryTarget = 'commonjs2';
   } else {
@@ -197,7 +197,7 @@ module.exports = ({
       net: 'empty',
       tls: 'empty',
       __dirname: true,
-      __filename: true,
+      __filename: true
     };
   }
 
@@ -214,11 +214,7 @@ module.exports = ({
   config = entry(config, options);
   config = lambda(config, options);
   return plugins.reduce((store, plugin) => {
-    const req = require(path.resolve(
-      pluginsFolder,
-      isLinked ? plugin : `olymp-${plugin}`,
-      'plugin'
-    ));
+    const req = require(path.resolve(pluginsFolder, plugin, 'plugin'));
     return req(config, options, webpack) || config;
   }, config);
 };

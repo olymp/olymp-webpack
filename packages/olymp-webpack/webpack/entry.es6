@@ -10,6 +10,7 @@ module.exports = (
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
+        'olymp-pwa/offline',
         entry || 'olymp-pwa/entry'
       ];
     } else {
