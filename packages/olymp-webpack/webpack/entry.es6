@@ -4,17 +4,25 @@ module.exports = (
   config,
   { isWeb, isElectronMain, isElectronRenderer, isDev, isNode, entry, target }
 ) => {
+  if (entry && entry.indexOf('?') !== -1) {
+    config.resolve.alias.__resourceQuery = entry.split('?')[1];
+  }
   if (isWeb) {
     if (isDev) {
       config.entry.app = [
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
-        'olymp-pwa/offline',
-        entry || 'olymp-pwa/entry'
+        'babel-polyfill',
+        'olymp-webpack-pwa/offline',
+        entry || 'olymp-webpack-pwa/entry'
       ];
     } else {
-      config.entry.app = [entry || 'olymp-pwa/entry'];
+      config.entry.app = [
+        'babel-polyfill',
+        'olymp-webpack-pwa/offline'
+        entry || 'olymp-webpack-pwa/entry'
+      ];
     }
   } else if (isElectronRenderer) {
     if (isDev) {
@@ -22,16 +30,16 @@ module.exports = (
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
-        config.entry || 'olymp-electron/entry'
+        config.entry || 'olymp-webpack-electron/entry'
       ];
     } else {
-      config.entry.app = [entry || 'olymp-electron/entry'];
+      config.entry.app = [entry || 'olymp-webpack-electron/entry'];
     }
   } else if (isElectronMain) {
     if (isDev) {
       config.entry.main = [
         'webpack/hot/poll?1000',
-        entry || 'olymp-electron/main'
+        entry || 'olymp-webpack-electron/main'
       ];
     } else {
       config.entry.main = [entry || 'olymp-electron/main'];
