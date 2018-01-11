@@ -1,5 +1,5 @@
 {
-  "version": "20.0.10",
+  "version": "20.1.0",
   "name": "olymp-lerna",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -43,6 +43,5 @@
     "recompose": "^0.26.0",
     "uglify-es": "^3.2.2",
     "webpack": "^3.10.0"
-  },
-  "devDependencies": {}
+  }
 }
