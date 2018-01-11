@@ -1,0 +1,46 @@
+{
+  "private": true,
+  "version": "15.2.8",
+  "name": "powr",
+  "description": "",
+  "scripts": {
+    "up": "npm-check -u",
+    "init": "lerna init --independent",
+    "watch": "node packages/lerna/bin/olymp-lerna watch",
+    "lp": "lerna publish --registry=https://registry.npmjs.org/",
+    "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lb": "lerna bootstrap",
+    "li": "lerna exec --concurrency 1 -- npm i",
+    "lu": "lerna exec --concurrency 1 -- npm run up",
+    "lc": "del 'packages/*/package-lock.json' 'packages/*/node_modules'",
+    "la": "lerna add olymp-electron"
+  },
+  "engines": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olymp/olymp-webpack.git"
+  },
+  "keywords": [
+    "react",
+    "universal",
+    "javascript",
+    "express",
+    "webpack"
+  ],
+  "author": "Benjamin Kniffler <bkniffler@me.com>",
+  "contributors": [
+    "Benjamin Kniffler <bkniffler@me.com>",
+    "Philipp Achenbach <olymp@philipp-achenbach.de>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olymp/olymp-webpack/issues"
+  },
+  "homepage": "https://github.com/olymp/olymp-webpack#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^2.5.1",
+    "eslint-config-olymp": "^16.0.17",
+    "olymp-lerna": "^20.0.0-38"
+  }
+}
