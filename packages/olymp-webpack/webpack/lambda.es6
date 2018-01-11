@@ -18,7 +18,7 @@ module.exports = (
       ])
     );
     const envStr = Object.keys(env)
-      .reduce((result, key) => [...result, `${key}=${env[key]}`], [])
+      .reduce((result, key) => [...result, `${key}="${env[key]}"`], [])
       .join(' ');
     if (isDev) {
       config.plugins.push(
