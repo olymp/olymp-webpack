@@ -8,9 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "cache-loader": "^1.2.0",
     "css-loader": "^0.28.4",

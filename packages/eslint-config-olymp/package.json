@@ -8,9 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "babel-eslint": "^8.1.2",
     "eslint": "^4.13.1",

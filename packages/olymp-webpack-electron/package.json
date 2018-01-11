@@ -8,9 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u"
-  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "devtron": "^1.4.0",

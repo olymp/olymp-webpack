@@ -8,10 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u",
-    "test": "jest"
-  },
   "dependencies": {
     "assets-webpack-plugin": "^3.5.1",
     "copy-webpack-plugin": "^4.3.1",

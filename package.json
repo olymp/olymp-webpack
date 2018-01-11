@@ -4,14 +4,14 @@
   "name": "olymp-webpack",
   "description": "",
   "scripts": {
-    "up": "yarn upgrade-interactive --latest",
+    "up": "npm-check -u",
     "init": "lerna init --independent",
-    "watch": "node packages/lerna/bin/olymp-lerna watch",
+    "watch": "olymp-lerna watch",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
     "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "lb": "lerna bootstrap",
-    "li": "lerna exec --concurrency 1 -- yarn",
-    "lu": "lerna exec --concurrency 1 -- yarn upgrade-interactive --latest",
+    "li": "lerna exec --concurrency 1 -- npm i",
+    "lu": "lerna exec --concurrency 1 -- npm-check -u",
     "lc": "del 'packages/*/package-lock.json' 'packages/*/node_modules'"
   },
   "engines": {},
@@ -40,6 +40,6 @@
   "devDependencies": {
     "eslint-config-olymp": "^20.1.1",
     "lerna": "^2.5.1",
-    "olymp-lerna": "^20.0.0-38"
+    "olymp-lerna": "^20.1.1"
   }
 }

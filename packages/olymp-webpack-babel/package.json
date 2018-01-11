@@ -8,10 +8,6 @@
     "Philipp Achenbach <olymp@philipp-achenbach.de>"
   ],
   "license": "MIT",
-  "scripts": {
-    "up": "npm-check -u",
-    "test": "jest"
-  },
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
