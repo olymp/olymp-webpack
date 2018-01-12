@@ -1,11 +1,21 @@
 const path = require('path');
 const fs = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const StartServerPlugin = require('start-server-webpack-plugin');
 
 module.exports = (
   config,
   { folder, target, appRoot, entry, env, isDev, serverlessYml, port }
 ) => {
+  if (target === 'lambda') {
+    config.plugins.push(
+      new StartServerPlugin({
+        name: 'app.js'
+        // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
+      })
+    );
+  }
+  return config;
   if (target === 'lambda') {
     config.plugins.push(
       new CopyWebpackPlugin([

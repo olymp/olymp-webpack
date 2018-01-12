@@ -1,41 +1,31 @@
 const express = require('express');
-const apiGatewayLocal = require('api-gateway-localdev');
 
 const { playground, server } = require('__resourceQuery');
 
-export default apiGatewayLocal(express(), [
-  {
-    lambda: server,
-    method: 'POST',
-    path: '/graphql',
-    responses: {
-      '200': {
-        responseTemplates: {},
-        responseModels: {}
-      },
-      '404': {
-        selectionPattern: '.*404.*',
-        responseTemplates: {},
-        responseModels: {}
-      }
+const app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+const invoke = func => (req, res) => {
+  func(
+    {
+      httpMethod: req.method,
+      queryStringParameters: req.query || {},
+      body: req.body || {},
+      headers: req.headers || {}
     },
-    requestTemplates: {}
-  },
-  {
-    lambda: playground,
-    method: 'GET',
-    path: '/graphql',
-    responses: {
-      '200': {
-        responseTemplates: {},
-        responseModels: {}
-      },
-      '404': {
-        selectionPattern: '.*404.*',
-        responseTemplates: {},
-        responseModels: {}
-      }
-    },
-    requestTemplates: {}
-  }
-]);
+    {},
+    (err, { statusCode, headers, body }) => {
+      res
+        .status(statusCode)
+        .set(headers)
+        .send(body);
+    }
+  );
+};
+app.get('/graphql', invoke(playground));
+app.post('/graphql', invoke(server));
+
+export default app;

@@ -132,7 +132,9 @@ exports.dev = (options, port) => {
           'Access-Control-Allow-Origin': '*'
         },
         proxy: isServerless
-          ? {}
+          ? {
+              '/graphql': `http://localhost:${port + 1}`
+            }
           : {
               '**': `http://localhost:${port + 1}`
             },
