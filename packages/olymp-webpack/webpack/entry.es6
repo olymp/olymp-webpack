@@ -51,7 +51,11 @@ module.exports = (
     }
   } else if (target === 'lambda') {
     if (isDev) {
-      config.entry.app = ['babel-polyfill', entry || 'olymp-server/entry'];
+      config.entry.app = [
+        'babel-polyfill',
+        'webpack/hot/poll?1000',
+        entry || 'olymp-server/entry'
+      ];
     } else {
       config.entry.app = ['babel-polyfill', entry || 'olymp-server/entry'];
     }

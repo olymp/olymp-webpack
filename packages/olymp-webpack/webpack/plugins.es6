@@ -110,7 +110,9 @@ module.exports = (
 
   // Hot module replacement on dev
   if (isDev) {
-    config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.plugins.push(
+      new webpack.HotModuleReplacementPlugin({ quiet: true })
+    );
   }
 
   // LimitChunkCount on all but production-web
