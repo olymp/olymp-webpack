@@ -98,7 +98,7 @@ exports.dev = options => {
         ...olymprc,
         ...config,
         mode,
-        port: config.port || 3000,
+        port: config.port,
         isSSR: !config.serverless && config.ssr !== false,
         isServerless: config.serverless || isServerless
       })

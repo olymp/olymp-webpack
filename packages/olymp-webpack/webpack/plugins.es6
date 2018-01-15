@@ -25,9 +25,6 @@ module.exports = (
     sharedEnv = {}
   }
 ) => {
-  if (port && !env.PORT) {
-    env.PORT = `${port}`;
-  }
   config.plugins = [
     new webpack.LoaderOptionsPlugin({
       debug: isDev
@@ -47,7 +44,8 @@ module.exports = (
       'process.env.IS_SERVERLESS': !isNetlify && isServerless,
       'process.env.IS_WEB': isWeb,
       'process.env.IS_NODE': isNode,
-      'process.env.IS_ELECTRON': isElectron
+      'process.env.IS_ELECTRON': isElectron,
+      'process.env.PORT': `${port}`
     }),
     // new PrepackWebpackPlugin({ }),
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -86,12 +84,6 @@ module.exports = (
           }
           return store;
         }, {})
-      })
-    );
-  } else if (port) {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env.PORT': `"${port}"`
       })
     );
   }
