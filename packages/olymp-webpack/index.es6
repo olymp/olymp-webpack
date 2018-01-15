@@ -80,12 +80,11 @@ exports.build = options => {
   });
 };
 
-exports.dev = (options, port) => {
+exports.dev = options => {
   const mode = process.env.NODE_ENV || 'development';
   if (!Array.isArray(options)) {
     options = [options];
   }
-  port = parseInt(`${port}`, 10);
   const watch = {
     aggregateTimeout: 300,
     poll: false,
@@ -99,10 +98,7 @@ exports.dev = (options, port) => {
         ...olymprc,
         ...config,
         mode,
-        port:
-          config.target === 'node' || config.target === 'lambda'
-            ? port + 1
-            : port,
+        port: config.port || 3000,
         isSSR: !config.serverless && config.ssr !== false,
         isServerless: config.serverless || isServerless
       })
@@ -127,21 +123,16 @@ exports.dev = (options, port) => {
       });
     } else {
       const WebpackDevServer = require('webpack-dev-server');
+      const proxy = config.proxy || {};
       const server = new WebpackDevServer(currentCompiler, {
         headers: {
           'Access-Control-Allow-Origin': '*'
         },
-        proxy: isServerless
-          ? {
-              '/graphql': `http://localhost:${port + 1}`
-            }
-          : {
-              '**': `http://localhost:${port + 1}`
-            },
+        proxy: proxy || {},
         watchOptions: watch,
         inline: false,
         host: '0.0.0.0',
-        port,
+        port: config.port,
         disableHostCheck: true,
         historyApiFallback: true,
         hot: true,
@@ -162,13 +153,8 @@ exports.dev = (options, port) => {
           publicPath: false
         }
       });
-      console.log(
-        'WebpackDevServer listening to',
-        port,
-        'proxy requests to',
-        port + 1
-      );
-      server.listen(port);
+      console.log('WebpackDevServer listening to', config.port);
+      server.listen(config.port);
     }
   });
   return compiler;
