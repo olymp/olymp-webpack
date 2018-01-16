@@ -188,7 +188,15 @@ class DepsPlugin {
       compilation.chunks.forEach(chunk => {
         chunk.forEachModule(module => {
           if (module.external) {
-            modules.push(module.request);
+            if (module.request[0] === '@') {
+              modules.push(
+                `${module.request.split('/')[0]}/${
+                  module.request.split('/')[1]
+                }`
+              );
+            } else {
+              modules.push(module.request.split('/')[0]);
+            }
           } else if (
             module.request &&
             module.request.indexOf('/node_modules/') !== -1
