@@ -7,16 +7,14 @@ module.exports = (
   config,
   { folder, target, appRoot, entry, env, isDev, serverlessYml, port }
 ) => {
-  if (target === 'lambda') {
+  if (target === 'lambda' && isDev) {
     config.plugins.push(
       new StartServerPlugin({
         name: 'app.js'
         // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
       })
     );
-  }
-  return config;
-  if (target === 'lambda') {
+  } else if (target === 'lambda') {
     config.plugins.push(
       new CopyWebpackPlugin([
         {
@@ -27,6 +25,21 @@ module.exports = (
         }
       ])
     );
+    config.plugins.push(
+      new DepsPlugin({
+        root: appRoot,
+        outDir: path.resolve(appRoot, folder, target.split('-')[0])
+      })
+    );
+    config.plugins.push(
+      new WebpackShellPlugin({
+        onBuildEnd: [`cd ./.dist/lambda && npm i`],
+        safe: true
+      })
+    );
+  }
+  return config;
+  if (target === 'lambda') {
     const envStr = Object.keys(env)
       .reduce((result, key) => [...result, `${key}="${env[key]}"`], [])
       .join(' ');
@@ -42,18 +55,6 @@ module.exports = (
         })
       );
     } else {
-      config.plugins.push(
-        new DepsPlugin({
-          root: appRoot,
-          outDir: path.resolve(appRoot, folder, target.split('-')[0])
-        })
-      );
-      config.plugins.push(
-        new WebpackShellPlugin({
-          onBuildEnd: [`cd ./.dist/lambda && npm i`],
-          safe: true
-        })
-      );
     }
   }
   return config;

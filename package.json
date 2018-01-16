@@ -36,7 +36,9 @@
     "url": "https://github.com/olymp/olymp-webpack/issues"
   },
   "homepage": "https://github.com/olymp/olymp-webpack#readme",
-  "dependencies": {},
+  "dependencies": {
+    "webpack-bundle-analyzer": "^2.9.2"
+  },
   "devDependencies": {
     "eslint-config-olymp": "^20.1.2",
     "lerna": "^2.7.0",
