@@ -1,14 +1,13 @@
-const express = require('express');
-
-const { playground, server } = require('__resourceQuery');
+import express from 'express';
+import bodyParser from 'body-parser';
+import serverless from '__resourceQuery/serverless.yml';
 
 const app = express();
-const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const invoke = func => (req, res) => {
+const invoke = (func, isMiddleware) => (req, res, next) => {
   func(
     {
       httpMethod: req.method,
@@ -16,16 +15,41 @@ const invoke = func => (req, res) => {
       body: req.body || {},
       headers: req.headers || {}
     },
-    {},
-    (err, { statusCode, headers, body }) => {
-      res
-        .status(statusCode)
-        .set(headers)
-        .send(body);
+    req.context || {},
+    (err, response) => {
+      if (err) {
+        return res.status(500).send(
+          JSON.stringify({
+            err
+          })
+        );
+      } else if (response && isMiddleware) {
+        req.context = { ...(req.context || {}), ...response };
+      } else if (response && !isMiddleware) {
+        const { statusCode, headers, body } = response;
+        return res
+          .status(statusCode)
+          .set(headers)
+          .send(body);
+      }
+      next();
     }
   );
 };
-app.get('/graphql', invoke(playground));
-app.post('/graphql', invoke(server));
+
+const index = {};
+Object.keys(serverless.functions).forEach(key => {
+  const funcDef = serverless.functions[key];
+  const [func, file = 'index'] = funcDef.handler.split('.').reverse();
+  const module = require(`__resourceQuery/${file}`)[func];
+  index[key] = module;
+  if (funcDef.events && funcDef.events.length && funcDef.events[0].http) {
+    const { http } = funcDef.events[0];
+    if (http.authorizer && index[http.authorizer]) {
+      app[http.method](`/${http.path}`, invoke(index[http.authorizer], true));
+    }
+    app[http.method](`/${http.path}`, invoke(module));
+  }
+});
 
 export default app;

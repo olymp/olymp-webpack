@@ -76,12 +76,10 @@ const compile = x =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(dest));
 
-gulp.task('watch', () => {
-  compile(watch(src, { ignoreInitial: false, base: dest, dot: true }));
-});
-
-gulp.task('default', ['es6', 'watch']);
-
 exports.watch = () => {
+  compile(watch(src, { ignoreInitial: false, base: dest, dot: true }));
+};
+
+exports.build = () => {
   compile(watch(src, { ignoreInitial: false, base: dest, dot: true }));
 };

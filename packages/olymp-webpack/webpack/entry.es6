@@ -2,10 +2,16 @@ const path = require('path');
 
 module.exports = (
   config,
-  { isWeb, isElectronMain, isElectronRenderer, isDev, isNode, entry, target }
+  { isWeb, isElectronMain, isElectronRenderer, isDev, isNode, entry, target },
+  webpack
 ) => {
   if (entry && entry.indexOf('?') !== -1) {
     config.resolve.alias.__resourceQuery = entry.split('?')[1];
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.__RESOURCE_QUERY': `"${entry.split('?')[1]}"`
+      })
+    );
   }
   if (isWeb) {
     if (isDev) {

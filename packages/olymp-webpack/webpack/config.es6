@@ -4,7 +4,6 @@ const fs = require('fs');
 const externals = require('./externals');
 const entry = require('./entry');
 const webpackPlugins = require('./plugins');
-const lambda = require('./lambda');
 
 const appRoot = process.cwd();
 
@@ -205,10 +204,9 @@ module.exports = ({
     config.output.chunkFilename = filename;
   }
 
-  config = webpackPlugins(config, options);
-  config = externals(config, options);
-  config = entry(config, options);
-  config = lambda(config, options);
+  config = webpackPlugins(config, options, webpack);
+  config = externals(config, options, webpack);
+  config = entry(config, options, webpack);
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(pluginsFolder, plugin, 'plugin'));
     return req(config, options, webpack) || config;

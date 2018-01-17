@@ -12,6 +12,10 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
-    "express": "^4.16.2"
+    "copy-webpack-plugin": "^4.3.1",
+    "express": "^4.16.2",
+    "json-loader": "^0.5.7",
+    "start-server-webpack-plugin": "^2.2.0",
+    "yaml-loader": "^0.5.0"
   }
 }
