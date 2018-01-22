@@ -27,7 +27,7 @@ export default ({ transform = {}, isProd, isNode, isDev }) => {
   ]);
 
   if (isProd) {
-    babelOptions.plugins.push('graphql-tag');
+    // babelOptions.plugins.push('graphql-tag');
   }
 
   if (!isNode && isDev) {
