@@ -14,6 +14,9 @@ module.exports = (config, options) => {
     transform = {}
   } = options;
   if (isProd && isWeb) {
+    console.log(
+      'MANGLE = FALSE, https://github.com/graphql/graphql-js/issues/1182'
+    );
     // config.plugins.push(new LodashModuleReplacementPlugin()),
     config.plugins.push(
       /* new ClosureCompilerPlugin({
@@ -30,6 +33,7 @@ module.exports = (config, options) => {
         cache: true,
         parallel: 4,
         uglifyOptions: {
+          mangle: false, // temporary due to https://github.com/graphql/graphql-js/issues/1182
           // warnings: true,
           // mangle: true,
           /* parse: {
