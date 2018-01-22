@@ -41,7 +41,7 @@ module.exports = (
       'process.env.BUILD_ON': `"${new Date()}"`,
       'process.env.NODE_ENV': `"${isProd ? 'production' : 'development'}"`,
       'process.env.IS_SSR': isSSR,
-      'process.env.IS_SERVERLESS': !isNetlify && isServerless,
+      'process.env.IS_SERVERLESS': `${!isNetlify && isServerless}`,
       'process.env.IS_WEB': isWeb,
       'process.env.IS_NODE': isNode,
       'process.env.IS_ELECTRON': isElectron,
