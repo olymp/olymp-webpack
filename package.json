@@ -40,8 +40,8 @@
     "webpack-bundle-analyzer": "^2.9.2"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^20.1.28",
+    "eslint-config-olymp": "^20.1.29",
     "lerna": "^2.8.0",
-    "olymp-lerna": "^20.1.28"
+    "olymp-lerna": "^20.1.29"
   }
 }
