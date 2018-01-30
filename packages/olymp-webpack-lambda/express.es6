@@ -27,7 +27,7 @@ const invoke = (func, isMiddleware) => (req, res, next) => {
       } else if (response && !isMiddleware) {
         const { statusCode, headers, body } = response;
         return res
-          .status(statusCode)
+          .status(statusCode || 200)
           .set(headers)
           .send(body);
       }
