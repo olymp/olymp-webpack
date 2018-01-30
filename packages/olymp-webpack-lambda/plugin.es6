@@ -1,7 +1,8 @@
+import DepsPlugin from './webpack-deps-plugin';
+import WebpackShellPlugin from './webpack-shell-plugin';
+
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const StartServerPlugin = require('start-server-webpack-plugin');
-const WebpackShellPlugin = require('./webpack-shell-plugin');
-const DepsPlugin = require('./webpack-deps-plugin');
 
 const path = require('path');
 
@@ -29,7 +30,7 @@ module.exports = (config, { isDev, appRoot, folder, target, entry }) => {
       config.plugins.push(
         new CopyWebpackPlugin([
           {
-            from: path.resolve(entry, 'serverless.yml'),
+            from: path.resolve(entry, '..', 'serverless.yml'),
             to: path.resolve(appRoot, folder, target.split('-')[0])
           }
         ])
