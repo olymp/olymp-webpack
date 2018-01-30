@@ -12,7 +12,7 @@
     "babel-polyfill": "^6.26.0",
     "devtron": "^1.4.0",
     "electron": "^1.7.11",
-    "electron-builder": "^19.55.2",
+    "electron-builder": "^19.55.3",
     "electron-debug": "^1.4.0",
     "electron-log": "^2.2.13",
     "electron-publisher": "^0.1.6",
