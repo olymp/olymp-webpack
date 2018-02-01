@@ -13,31 +13,14 @@ module.exports = (
       })
     );
   }
-  if (isWeb) {
+  if (isElectronRenderer) {
     if (isDev) {
       config.entry.app = [
         'react-hot-loader/patch',
         `webpack-dev-server/client?${config.output.publicPath}`,
         'webpack/hot/only-dev-server',
         'babel-polyfill',
-        'olymp-webpack-pwa/offline',
-        entry || 'olymp-webpack-pwa/entry'
-      ];
-    } else {
-      config.entry.app = [
-        'babel-polyfill',
-        'olymp-webpack-pwa/offline',
-        entry || 'olymp-webpack-pwa/entry'
-      ];
-    }
-  } else if (isElectronRenderer) {
-    if (isDev) {
-      config.entry.app = [
-        'babel-polyfill',
-        'react-hot-loader/patch',
-        `webpack-dev-server/client?${config.output.publicPath}`,
-        'webpack/hot/only-dev-server',
-        config.entry || 'olymp-webpack-electron/entry'
+        entry || 'olymp-webpack-electron/entry'
       ];
     } else {
       config.entry.app = [
@@ -48,12 +31,15 @@ module.exports = (
   } else if (isElectronMain) {
     if (isDev) {
       config.entry.main = [
-        'babel-polyfill',
         'webpack/hot/poll?1000',
+        'babel-polyfill',
         entry || 'olymp-webpack-electron/main'
       ];
     } else {
-      config.entry.main = ['babel-polyfill', entry || 'olymp-electron/main'];
+      config.entry.main = [
+        'babel-polyfill',
+        entry || 'olymp-webpack-electron/main'
+      ];
     }
   } else if (target === 'lambda') {
     if (isDev) {
@@ -74,6 +60,23 @@ module.exports = (
       ];
     } else {
       config.entry.app = ['babel-polyfill', entry || 'olymp-server/entry'];
+    }
+  } else if (isWeb) {
+    if (isDev) {
+      config.entry.app = [
+        'react-hot-loader/patch',
+        `webpack-dev-server/client?${config.output.publicPath}`,
+        'webpack/hot/only-dev-server',
+        'babel-polyfill',
+        'olymp-webpack-pwa/offline',
+        entry || 'olymp-webpack-pwa/entry'
+      ];
+    } else {
+      config.entry.app = [
+        'babel-polyfill',
+        'olymp-webpack-pwa/offline',
+        entry || 'olymp-webpack-pwa/entry'
+      ];
     }
   }
   return config;

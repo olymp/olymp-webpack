@@ -1,2 +1,1 @@
-import 'babel-polyfill';
-import 'olymp-render/dom';
+import 'olymp/dom';

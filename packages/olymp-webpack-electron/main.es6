@@ -1,4 +1,3 @@
-require('babel-polyfill').default;
 const { autoUpdater } = require('electron-updater');
 const {
   Menu,
@@ -6,13 +5,13 @@ const {
   BrowserWindow,
   crashReporter,
   dialog,
-  shell,
+  shell
 } = require('electron');
 require('electron-debug')({ enabled: true });
 const log = require('electron-log');
 const { machineIdSync } = require('node-machine-id');
 const os = require('os');
-const elecApp = require('@electron');
+// const elecApp = require('@electron');
 
 log.transports.file.level = 'info';
 global.MACHINE_ID_ORIGINAL = machineIdSync({ original: true });
@@ -24,7 +23,7 @@ if (process.env.CRASHREPORT_URL) {
     productName: 'App',
     companyName: 'cool.app',
     submitURL: process.env.CRASHREPORT_URL,
-    uploadToServer: true,
+    uploadToServer: true
   });
 }
 
@@ -49,9 +48,9 @@ const template = [
         accelerator: 'Command+Q',
         click() {
           app.quit();
-        },
-      },
-    ],
+        }
+      }
+    ]
   },
   {
     label: 'Bearbeiten',
@@ -60,7 +59,7 @@ const template = [
       {
         label: 'Wiederholen',
         accelerator: 'Shift+CmdOrCtrl+Z',
-        selector: 'redo:',
+        selector: 'redo:'
       },
       { type: 'separator' },
       { label: 'Ausschneiden', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
@@ -69,9 +68,9 @@ const template = [
       {
         label: 'Alles Einfügen',
         accelerator: 'CmdOrCtrl+A',
-        selector: 'selectAll:',
-      },
-    ],
+        selector: 'selectAll:'
+      }
+    ]
   },
   {
     label: 'Hilfe',
@@ -80,10 +79,10 @@ const template = [
         label: 'Log-Datei',
         click() {
           shell.openItem(log.transports.file.file);
-        },
-      },
-    ],
-  },
+        }
+      }
+    ]
+  }
 ];
 
 function createWindow() {
@@ -109,27 +108,60 @@ function createWindow() {
   // Create the browser window.
   // mainWindow = new BrowserWindow({ width: 800, height: 600, frame: true, titleBarStyle: 'hidden' });
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 750,
+    width: 1300,
+    height: 800,
     minWidth: 600,
     minHeight: 450,
     center: true,
     webPreferences: {
       nodeIntegrationInWorker: true,
-    },
+      nativeWindowOpen: true
+    }
     // frame: false,
     // titleBarStyle: 'hidden',
   });
 
+  mainWindow.webContents.on(
+    'new-window',
+    (event, url, frameName, disposition, options, additionalFeatures) => {
+      if (frameName === 'oauth') {
+        console.log(additionalFeatures, options);
+        // open window as modal
+        event.preventDefault();
+        Object.assign(options, {
+          modal: true,
+          parent: mainWindow,
+          width: 350,
+          height: 650
+        });
+
+        const guest = (event.newGuest = new BrowserWindow(options));
+        /* console.log('BLA');
+        event.newGuest.webContents.on('will-navigate', (event, url) => {
+          console.log('will-nav', url);
+        }); */
+        guest.webContents.on(
+          'did-get-redirect-request',
+          (event, oldUrl, newUrl) => {
+            if (newUrl.indexOf('com://callback') === 0) {
+              mainWindow.webContents.send('oauth-callback', newUrl);
+              guest.close();
+            }
+          }
+        );
+      }
+    }
+  );
+
   log.info('Call app script');
-  if (elecApp && elecApp.default) {
+  if (false && elecApp && elecApp.default) {
     try {
       elecApp.default(mainWindow);
     } catch (err) {
       dialog.showMessageBox({
         type: 'error',
         title: 'Error',
-        message: JSON.stringify(err, null, 2),
+        message: JSON.stringify(err, null, 2)
       });
     }
   }
@@ -140,7 +172,7 @@ function createWindow() {
     url.format({
       pathname: path.join(__dirname, 'index.html'),
       protocol: 'file:',
-      slashes: true,
+      slashes: true
     })
   );
 
@@ -151,7 +183,7 @@ function createWindow() {
   const selectionMenu = Menu.buildFromTemplate([
     { role: 'copy' },
     { type: 'separator' },
-    { role: 'selectall' },
+    { role: 'selectall' }
   ]);
 
   const inputMenu = Menu.buildFromTemplate([
@@ -162,7 +194,7 @@ function createWindow() {
     { role: 'copy' },
     { role: 'paste' },
     { type: 'separator' },
-    { role: 'selectall' },
+    { role: 'selectall' }
   ]);
 
   mainWindow.webContents.on('context-menu', (e, props) => {
@@ -217,7 +249,7 @@ autoUpdater.on('update-available', (ev, info) => {
     type: 'info',
     title: 'Updater',
     message:
-      'Ein Update wurde gefunden und wird jetzt heruntergeladen/installiert. Das Programm wird sich anschließend automatisch erneut öffnen.',
+      'Ein Update wurde gefunden und wird jetzt heruntergeladen/installiert. Das Programm wird sich anschließend automatisch erneut öffnen.'
   });
 });
 autoUpdater.on('update-not-available', (ev, info) => {
