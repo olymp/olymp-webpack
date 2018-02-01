@@ -125,7 +125,6 @@ function createWindow() {
     'new-window',
     (event, url, frameName, disposition, options, additionalFeatures) => {
       if (frameName === 'oauth') {
-        console.log(additionalFeatures, options);
         // open window as modal
         event.preventDefault();
         Object.assign(options, {
@@ -136,10 +135,11 @@ function createWindow() {
         });
 
         const guest = (event.newGuest = new BrowserWindow(options));
-        /* console.log('BLA');
         event.newGuest.webContents.on('will-navigate', (event, url) => {
-          console.log('will-nav', url);
-        }); */
+          if (url.indexOf('com://callback') === 0) {
+            guest.close();
+          }
+        });
         guest.webContents.on(
           'did-get-redirect-request',
           (event, oldUrl, newUrl) => {
