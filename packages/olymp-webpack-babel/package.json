@@ -33,6 +33,7 @@
     "extract-hoc": "0.0.5",
     "import-inspector": "^2.0.0",
     "react-hot-loader": "4.0.0-beta.15",
+    "reflective-bind": "0.0.4",
     "uglify-es": "^3.3.9",
     "uglifyjs-webpack-plugin": "^1.1.8"
   },

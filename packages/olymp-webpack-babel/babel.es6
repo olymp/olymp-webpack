@@ -8,6 +8,7 @@ export default ({ transform = {}, isProd, isNode, isDev }) => {
       'transform-decorators-legacy',
       'transform-class-properties',
       'transform-es2015-classes',
+      'reflective-bind',
       // 'babel-plugin-fela',
       ['import', { libraryName: 'antd', style: true }]
     ]
