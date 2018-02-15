@@ -7,6 +7,8 @@ const watch = require('gulp-watch');
 const debug = require('gulp-debug');
 const path = require('path');
 
+process.env.NODE_ENV = 'production';
+
 const root = process.cwd();
 
 const { packages } = require(path.resolve(root, 'lerna.json'));
@@ -21,26 +23,9 @@ packages.forEach(x => {
 const dest = '.';
 
 const babelOptions = {
-  presets: [
-    'react',
-    [
-      'latest',
-      {
-        es2015: {
-          modules: 'commonjs'
-          // modules: false,
-        }
-      }
-    ]
-  ],
+  presets: ['babel-preset-react-app'],
   plugins: [
-    'syntax-dynamic-import',
     'transform-decorators-legacy',
-    'transform-object-rest-spread',
-    'transform-class-properties',
-    'transform-object-rest-spread',
-    'transform-react-constant-elements',
-    'transform-react-pure-class-to-function',
     'lodash',
     ['import', { libraryName: 'antd', style: true }],
     [

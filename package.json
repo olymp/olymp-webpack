@@ -37,11 +37,11 @@
   },
   "homepage": "https://github.com/olymp/olymp-webpack#readme",
   "dependencies": {
-    "webpack-bundle-analyzer": "^2.9.2"
+    "webpack-bundle-analyzer": "^2.10.0"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^20.1.31",
-    "lerna": "^2.8.0",
-    "olymp-lerna": "^20.1.29"
+    "eslint-config-olymp": "^20.1.37",
+    "lerna": "^2.9.0",
+    "olymp-lerna": "^20.1.42"
   }
 }
