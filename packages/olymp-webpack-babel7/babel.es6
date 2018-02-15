@@ -1,6 +1,6 @@
 export default ({ transform = {}, isProd, isNode, isDev }) => {
   const babelOptions = {
-    presets: ['babel-preset-react-app'],
+    presets: [require.resolve('olymp-webpack-babel7/babel-core')],
     plugins: [
       'transform-decorators-legacy',
       ['import', { libraryName: 'antd', style: true }]
