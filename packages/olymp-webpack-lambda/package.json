@@ -9,13 +9,13 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "webpack": "^3.10.0"
+    "webpack": "^3.11.0"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^4.3.1",
+    "copy-webpack-plugin": "^4.4.1",
     "express": "^4.16.2",
     "json-loader": "^0.5.7",
-    "start-server-webpack-plugin": "^2.2.0",
+    "start-server-webpack-plugin": "^2.2.1",
     "yaml-loader": "^0.5.0"
   }
 }
