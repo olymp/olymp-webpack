@@ -16,6 +16,7 @@ module.exports = ({ transform, isLibrary, isDev }) => {
       ],
     ],
     plugins: [
+      'transform-runtime',
       'syntax-dynamic-import',
       'transform-object-rest-spread',
       // 'transform-es2015-destructuring',
