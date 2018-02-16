@@ -8,47 +8,52 @@
 module.exports = ({ isLibrary, isDev, isFlowEnabled }) => ({
   passPerPreset: true,
   presets: [
-    [
-      {
-        plugins: [
-          // Polyfills the runtime needed for async/await and generators
-          [
-            require('@babel/plugin-transform-runtime').default,
-            isLibrary
-              ? {
-                  polyfill: true,
-                  regenerator: false,
-                }
-              : {
-                  helpers: false,
-                  polyfill: false,
-                  regenerator: true,
-                },
-          ],
+    {
+      plugins: [
+        // Polyfills the runtime needed for async/await and generators
+        [
+          require('@babel/plugin-transform-runtime').default,
+          isLibrary
+            ? {
+                polyfill: true,
+                regenerator: false,
+              }
+            : {
+                helpers: false,
+                polyfill: false,
+                regenerator: true,
+              },
         ],
-      },
-      // Latest stable ECMAScript features
-      require('@babel/preset-env').default,
-      {
-        // `entry` transforms `@babel/polyfill` into individual requires for
-        // the targeted browsers. This is safer than `usage` which performs
-        // static code analysis to determine what's required.
-        // This is probably a fine default to help trim down bundles when
-        // end-users inevitably import '@babel/polyfill'.
-        useBuiltIns: isLibrary ? 'usage' : 'entry',
-        // Do not transform modules to CJS
-        modules: isLibrary ? 'commonjs' : false,
-      },
-    ],
-    [
-      require('@babel/preset-react').default,
-      {
-        // Adds component stack to warning messages
-        // Adds __self attribute to JSX which React will use for some warnings
-        development: !!isDev,
-      },
-    ],
-    isFlowEnabled && [require('@babel/preset-flow').default],
+      ],
+    },
+    {
+      passPerPreset: false,
+      presets: [
+        // Latest stable ECMAScript features
+        [
+          require('@babel/preset-env').default,
+          {
+            // `entry` transforms `@babel/polyfill` into individual requires for
+            // the targeted browsers. This is safer than `usage` which performs
+            // static code analysis to determine what's required.
+            // This is probably a fine default to help trim down bundles when
+            // end-users inevitably import '@babel/polyfill'.
+            useBuiltIns: isLibrary ? 'usage' : 'entry',
+            // Do not transform modules to CJS
+            modules: isLibrary ? 'commonjs' : false,
+          },
+        ],
+        [
+          require('@babel/preset-react').default,
+          {
+            // Adds component stack to warning messages
+            // Adds __self attribute to JSX which React will use for some warnings
+            development: !!isDev,
+          },
+        ],
+        isFlowEnabled && [require('@babel/preset-flow').default],
+      ],
+    },
   ].filter(Boolean),
   plugins: [
     // Experimental macros support. Will be documented after it's had some time
