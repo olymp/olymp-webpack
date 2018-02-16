@@ -12,18 +12,18 @@ const invoke = (func, isMiddleware) => (req, res, next) => {
       httpMethod: req.method,
       queryStringParameters: req.query || {},
       body: req.body || {},
-      headers: req.headers || {}
+      headers: req.headers || {},
     },
     req.context || {},
     (err, response) => {
       if (err) {
         return res.status(500).send(
           JSON.stringify({
-            err
+            err,
           })
         );
       } else if (response && isMiddleware) {
-        req.context = { ...(req.context || {}), ...response };
+        req.context = Object.assign({}, req.context || {}, response);
       } else if (response && !isMiddleware) {
         const { statusCode, headers, body } = response;
         return res
