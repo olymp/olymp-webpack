@@ -19,5 +19,6 @@
     "gulp-watch": "^5.0.0",
     "lerna": "^2.9.0",
     "olymp-babel": "^20.2.13"
-  }
+  },
+  "devDependencies": {}
 }

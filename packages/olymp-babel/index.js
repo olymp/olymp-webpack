@@ -52,7 +52,7 @@ module.exports = ({ isLibrary, isDev, isFlowEnabled }) => ({
           },
         ],
         isFlowEnabled && [require('@babel/preset-flow').default],
-      ],
+      ].filter(Boolean),
     },
   ].filter(Boolean),
   plugins: [
