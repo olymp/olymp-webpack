@@ -1,5 +1,5 @@
 {
-  "version": "20.2.11",
+  "version": "20.2.12",
   "name": "olymp-webpack-babel",
   "description": "",
   "author": "Benjamin Kniffler <bkniffler@me.com>",
@@ -12,7 +12,7 @@
     "babel-loader": "^8.0.0-beta.0",
     "cache-loader": "^1.2.0",
     "extract-hoc": "0.0.5",
-    "olymp-babel": "^20.2.11",
+    "olymp-babel": "^20.2.12",
     "react-hot-loader": "4.0.0-beta.15",
     "uglifyjs-webpack-plugin": "^1.1.8"
   },
