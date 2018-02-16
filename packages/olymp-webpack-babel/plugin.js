@@ -1,6 +1,5 @@
 const { resolve } = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const babel = require('./babel');
 
 module.exports = (config, options) => {
   const {
