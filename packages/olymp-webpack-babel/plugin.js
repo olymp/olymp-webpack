@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const babel = require('./babel').default;
+const babel = require('./babel');
 
 module.exports = (config, options) => {
   const {
@@ -11,13 +11,13 @@ module.exports = (config, options) => {
     appRoot,
     target,
     folder,
-    transform = {}
+    transform = {},
   } = options;
   if (isProd && isWeb) {
     console.log(
       'MANGLE = FALSE, https://github.com/graphql/graphql-js/issues/1182'
     );
-    
+
     // config.plugins.push(new LodashModuleReplacementPlugin()),
     config.plugins.push(
       new UglifyJSPlugin({
@@ -29,34 +29,38 @@ module.exports = (config, options) => {
             // https://github.com/facebook/create-react-app/issues/2376
             // Pending further investigation:
             // https://github.com/mishoo/UglifyJS2/issues/2011
-            comparisons: false
+            comparisons: false,
           },
           mangle: {
-            safari10: true
+            safari10: true,
           },
           output: {
             comments: false,
             // Turned on because emoji and regex is not minified properly using default
             // https://github.com/facebook/create-react-app/issues/2488
-            ascii_only: true
-          }
+            ascii_only: true,
+          },
         },
         // Use multi-process parallel running to improve the build speed
         // Default number of concurrent runs: os.cpus().length - 1
         parallel: true,
         // Enable file caching
         cache: true,
-        sourceMap: true
+        sourceMap: true,
       })
     );
   }
 
-  const babelOptions = babel({
-    transform,
-    isDev,
-    isNode,
-    isProd
-  });
+  const babelOptions = require('olymp-babel')({ isDev });
+
+  if (isProd) {
+    // babelOptions.plugins.push('graphql-tag');
+  }
+
+  if (!isNode && isDev) {
+    babelOptions.plugins.push('extract-hoc/babel');
+    babelOptions.plugins.push('react-hot-loader/babel');
+  }
 
   if (isDev) {
     config.module.rules.push({
@@ -65,21 +69,26 @@ module.exports = (config, options) => {
         {
           loader: 'cache-loader',
           options: {
-            cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-babel`)
-          }
+            cacheDirectory: resolve(
+              appRoot,
+              folder,
+              'cache',
+              `${target}-babel`
+            ),
+          },
         },
         {
           loader: 'babel-loader',
-          options: babelOptions
-        }
+          options: babelOptions,
+        },
       ],
       include: [
         // path.resolve(appRoot, 'server'),
         // path.resolve(olympRoot, 'graphql'),
         resolve(appRoot, 'app'),
         resolve(appRoot, 'electron'),
-        resolve(appRoot, 'server')
-      ]
+        resolve(appRoot, 'server'),
+      ],
     });
   } else {
     config.module.rules.push({
@@ -88,21 +97,26 @@ module.exports = (config, options) => {
         {
           loader: 'cache-loader',
           options: {
-            cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-babel`)
-          }
+            cacheDirectory: resolve(
+              appRoot,
+              folder,
+              'cache',
+              `${target}-babel`
+            ),
+          },
         },
         {
           loader: 'babel-loader',
-          options: babelOptions
-        }
+          options: babelOptions,
+        },
       ],
       include: [
         // path.resolve(appRoot, 'server'),
         // path.resolve(olympRoot, 'graphql'),
         resolve(appRoot, 'app'),
         resolve(appRoot, 'electron'),
-        resolve(appRoot, 'server')
-      ]
+        resolve(appRoot, 'server'),
+      ],
     });
   }
 

@@ -1,4 +1,4 @@
-export default ({ transform = {}, isProd, isNode, isDev }) => {
+module.exports = ({ transform = {}, isProd, isNode, isDev }) => {
   const babelOptions = require('olymp-babel')({ isDev });
 
   if (isProd) {
