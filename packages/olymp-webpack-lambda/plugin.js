@@ -1,8 +1,7 @@
-import DepsPlugin from './webpack-deps-plugin';
-import WebpackShellPlugin from './webpack-shell-plugin';
-
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const StartServerPlugin = require('start-server-webpack-plugin');
+const DepsPlugin = require('./webpack-deps-plugin');
+const WebpackShellPlugin = require('./webpack-shell-plugin');
 
 const path = require('path');
 

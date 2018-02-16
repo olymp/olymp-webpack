@@ -6,6 +6,7 @@ const babel = require('gulp-babel');
 const watch = require('gulp-watch');
 const debug = require('gulp-debug');
 const path = require('path');
+const babelOptions = require('olymp-babel')({ isLibrary: true });
 
 process.env.NODE_ENV = 'production';
 
@@ -21,35 +22,6 @@ packages.forEach(x => {
   src.push(`!${root}/${x}/node_modules`);
 });
 const dest = '.';
-
-const babelOptions = {
-  presets: [require.resolve('olymp-lerna/babel')],
-  plugins: [
-    'transform-decorators-legacy',
-    'lodash',
-    ['import', { libraryName: 'antd', style: true }],
-    [
-      'transform-imports',
-      {
-        antd: {
-          transform: 'antd/lib/${member}',
-          kebabCase: true,
-          preventFullImport: true
-        },
-        'date-fns': {
-          transform: 'date-fns/${member}',
-          preventFullImport: true,
-          camelCase: true
-        },
-        'olymp-icons': {
-          transform: 'olymp-icons/lib/${member}',
-          kebabCase: true,
-          preventFullImport: true
-        }
-      }
-    ]
-  ]
-};
 
 const compile = x =>
   x

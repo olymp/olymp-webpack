@@ -11,7 +11,7 @@ const defaultOptions = {
   safe: false
 };
 
-export default class WebpackShellPlugin {
+class WebpackShellPlugin {
   constructor(options) {
     this.options = this.validateInput(
       this.mergeOptions(options, defaultOptions)
@@ -115,3 +115,5 @@ export default class WebpackShellPlugin {
     });
   }
 }
+
+module.exports = WebpackShellPlugin;

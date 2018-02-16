@@ -46,18 +46,18 @@ exports.build = options => {
   if (!Array.isArray(options)) {
     options = [options];
   }
-  process.env.NODE_ENV = 'production';
+  process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
   const compiler = webpack(
     options.map((config, i) => {
       rimraf.sync(path.resolve(root, '.dist', config.target));
-      return createConfig({
-        ...olymprc,
-        ...config,
-        mode: 'production',
-        isSSR: config.ssr,
-        isServerless: config.serverless
-      });
+      return createConfig(
+        Object.assign({}, olymprc, config, {
+          mode: 'production',
+          isSSR: config.ssr,
+          isServerless: config.serverless
+        })
+      );
     })
   );
 
@@ -81,7 +81,8 @@ exports.build = options => {
 };
 
 exports.dev = options => {
-  const mode = process.env.NODE_ENV || 'development';
+  process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+  const mode = process.env.NODE_ENV;
   if (!Array.isArray(options)) {
     options = [options];
   }
@@ -94,14 +95,14 @@ exports.dev = options => {
   const isServerless = options.filter(x => x.target === 'node').length === 0;
   const compiler = webpack(
     options.map(config =>
-      createConfig({
-        ...olymprc,
-        ...config,
-        mode,
-        port: config.port,
-        isSSR: !config.serverless && config.ssr !== false,
-        isServerless: config.serverless || isServerless
-      })
+      createConfig(
+        Object.assign({}, olymprc, config, {
+          mode,
+          port: config.port,
+          isSSR: !config.serverless && config.ssr !== false,
+          isServerless: config.serverless || isServerless
+        })
+      )
     )
   );
 

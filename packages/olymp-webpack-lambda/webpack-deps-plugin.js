@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-export default class DepsPlugin {
+class DepsPlugin {
   constructor(options) {
     this.options = options || {};
   }
@@ -31,10 +31,6 @@ export default class DepsPlugin {
         });
       });
 
-      console.log(
-        'out',
-        path.resolve(this.options.outDir || process.cwd(), 'package.json')
-      );
       const packageJson = JSON.parse(
         fs.readFileSync(
           path.resolve(this.options.root || process.cwd(), 'package.json')
@@ -65,3 +61,5 @@ export default class DepsPlugin {
     });
   }
 }
+
+module.exports = DepsPlugin;

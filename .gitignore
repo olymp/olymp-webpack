@@ -35,6 +35,3 @@ flow-typed/
 
 # Flow Coverage Report
 flow-coverage/
-
-# Lerna
-packages/**/*.js

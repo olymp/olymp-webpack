@@ -1,5 +1,6 @@
-import http from 'http';
-import app from './express';
+require('dotenv').config();
+const http = require('http');
+const app = require('./express').default;
 
 const server = http.createServer(app);
 let currentApp = app;

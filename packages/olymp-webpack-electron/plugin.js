@@ -1,6 +1,6 @@
-import electron from 'electron';
-import proc from 'child_process';
-import { resolve } from 'path';
+const electron = require('electron');
+const proc = require('child_process');
+const { resolve } = require('path');
 
 const webpack = require('webpack');
 const path = require('path');

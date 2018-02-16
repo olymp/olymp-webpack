@@ -22,9 +22,10 @@ module.exports = (config, { appRoot, externals = [], isNode }) => {
         v =>
           v === 'hashtax' ||
           v.indexOf('hashtax-') === 0 ||
-          v.indexOf('hashtax/') === 0,
-        ...externals.map(key => v => v === key || v.indexOf(`${key}/`) === 0)
-      ]
+          v.indexOf('hashtax/') === 0
+      ].concat(
+        externals.map(key => v => v === key || v.indexOf(`${key}/`) === 0)
+      )
     });
   }
   return config;

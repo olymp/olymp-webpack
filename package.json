@@ -6,13 +6,12 @@
   "scripts": {
     "up": "npm-check -u",
     "init": "lerna init --independent",
-    "watch": "olymp-lerna watch",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
     "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
     "lb": "lerna bootstrap",
     "li": "lerna exec --concurrency 1 -- npm i",
     "lu": "lerna exec --concurrency 1 -- npm-check -u",
-    "lc": "del 'packages/*/package-lock.json' 'packages/*/node_modules'"
+    "lc": "del 'packages/*/*.js'"
   },
   "engines": {},
   "repository": {
@@ -40,8 +39,6 @@
     "webpack-bundle-analyzer": "^2.10.0"
   },
   "devDependencies": {
-    "eslint-config-olymp": "^20.1.50",
-    "lerna": "^2.9.0",
-    "olymp-lerna": "^20.1.50"
+    "lerna": "^2.9.0"
   }
 }

@@ -1,6 +1,6 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import serverless from '__resourceQuery/serverless.yml';
+const express = require('express');
+const bodyParser = require('body-parser');
+const serverless = require('__resourceQuery/serverless.yml');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));

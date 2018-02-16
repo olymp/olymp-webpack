@@ -29,24 +29,29 @@ module.exports = (
     new webpack.LoaderOptionsPlugin({
       debug: isDev
     }),
-    new webpack.DefinePlugin({
-      ...Object.keys(env).reduce((store, key) => {
-        if (env[key] === true || process.env[key]) {
-          store[`process.env.${key}`] = JSON.stringify(process.env[key]);
-        } else {
-          store[`process.env.${key}`] = JSON.stringify(env[key]);
+    new webpack.DefinePlugin(
+      Object.assign(
+        {},
+        Object.keys(env).reduce((store, key) => {
+          if (env[key] === true || process.env[key]) {
+            store[`process.env.${key}`] = JSON.stringify(process.env[key]);
+          } else {
+            store[`process.env.${key}`] = JSON.stringify(env[key]);
+          }
+          return store;
+        }, {}),
+        {
+          'process.env.BUILD_ON': `"${new Date()}"`,
+          'process.env.NODE_ENV': `"${isProd ? 'production' : 'development'}"`,
+          'process.env.IS_SSR': isSSR,
+          'process.env.IS_SERVERLESS': `${!isNetlify && isServerless}`,
+          'process.env.IS_WEB': isWeb,
+          'process.env.IS_NODE': isNode,
+          'process.env.IS_ELECTRON': isElectron,
+          'process.env.PORT': `${port}`
         }
-        return store;
-      }, {}),
-      'process.env.BUILD_ON': `"${new Date()}"`,
-      'process.env.NODE_ENV': `"${isProd ? 'production' : 'development'}"`,
-      'process.env.IS_SSR': isSSR,
-      'process.env.IS_SERVERLESS': `${!isNetlify && isServerless}`,
-      'process.env.IS_WEB': isWeb,
-      'process.env.IS_NODE': isNode,
-      'process.env.IS_ELECTRON': isElectron,
-      'process.env.PORT': `${port}`
-    }),
+      )
+    ),
     // new PrepackWebpackPlugin({ }),
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
@@ -60,31 +65,36 @@ module.exports = (
   }
   if (!isServer) {
     config.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env.AUTH0_CLIENT_ID': process.env.AUTH0_CLIENT_ID
-          ? `"${process.env.AUTH0_CLIENT_ID}"`
-          : false,
-        'process.env.AUTH0_DOMAIN': process.env.AUTH0_DOMAIN
-          ? `"${process.env.AUTH0_DOMAIN}"`
-          : false,
-        'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
-          ? `"${process.env.GOOGLE_MAPS_KEY}"`
-          : false,
-        'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
-          ? `"${process.env.GRAPHQL_URL}"`
-          : false,
-        'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
-          ? `"${process.env.CRASHREPORT_URL}"`
-          : false,
-        ...Object.keys(sharedEnv).reduce((store, key) => {
-          if (sharedEnv[key] === true || process.env[key]) {
-            store[`process.env.${key}`] = JSON.stringify(process.env[key]);
-          } else {
-            store[`process.env.${key}`] = JSON.stringify(sharedEnv[key]);
-          }
-          return store;
-        }, {})
-      })
+      new webpack.DefinePlugin(
+        Object.assign(
+          {},
+          {
+            'process.env.AUTH0_CLIENT_ID': process.env.AUTH0_CLIENT_ID
+              ? `"${process.env.AUTH0_CLIENT_ID}"`
+              : false,
+            'process.env.AUTH0_DOMAIN': process.env.AUTH0_DOMAIN
+              ? `"${process.env.AUTH0_DOMAIN}"`
+              : false,
+            'process.env.GOOGLE_MAPS_KEY': process.env.GOOGLE_MAPS_KEY
+              ? `"${process.env.GOOGLE_MAPS_KEY}"`
+              : false,
+            'process.env.GRAPHQL_URL': process.env.GRAPHQL_URL
+              ? `"${process.env.GRAPHQL_URL}"`
+              : false,
+            'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
+              ? `"${process.env.CRASHREPORT_URL}"`
+              : false
+          },
+          Object.keys(sharedEnv).reduce((store, key) => {
+            if (sharedEnv[key] === true || process.env[key]) {
+              store[`process.env.${key}`] = JSON.stringify(process.env[key]);
+            } else {
+              store[`process.env.${key}`] = JSON.stringify(sharedEnv[key]);
+            }
+            return store;
+          }, {})
+        )
+      )
     );
   }
 

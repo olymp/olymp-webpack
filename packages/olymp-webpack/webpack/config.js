@@ -20,19 +20,18 @@ const allPackages = !isLinked
 
 const pluginsFolder = !isLinked ? nodeModules : topFolder;
 
-module.exports = ({
-  mode,
-  target,
-  port,
-  isSSR,
-  isServerless,
-  alias = {},
-  plugins = [],
-  appPath,
-  serverPath,
-  paths,
-  ...rest
-}) => {
+module.exports = options => {
+  const {
+    mode,
+    target,
+    port,
+    isSSR,
+    isServerless,
+    alias = {},
+    plugins = [],
+    paths
+  } = options;
+
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
   const isElectron = target.indexOf('electron') === 0;
@@ -45,26 +44,6 @@ module.exports = ({
   isServerless = isServerless === true || isElectron;
   isSSR = !isElectronMain && isSSR !== false && !isServerless;
   const folder = isDev ? '.dev' : '.dist';
-  const options = {
-    target,
-    folder,
-    isProd,
-    isDev,
-    isWeb,
-    isElectron,
-    isElectronMain,
-    isElectronRenderer,
-    isNetlify,
-    isNode,
-    isServerless,
-    isSSR,
-    appRoot,
-    nodeModules,
-    isLinked,
-    paths,
-    port,
-    ...rest
-  };
 
   const isVerbose = true;
   let config = {
@@ -204,11 +183,31 @@ module.exports = ({
     config.output.chunkFilename = filename;
   }
 
-  config = webpackPlugins(config, options, webpack);
-  config = externals(config, options, webpack);
-  config = entry(config, options, webpack);
+  const args = Object.assign({}, options, {
+    target,
+    folder,
+    isProd,
+    isDev,
+    isWeb,
+    isElectron,
+    isElectronMain,
+    isElectronRenderer,
+    isNetlify,
+    isNode,
+    isServerless,
+    isSSR,
+    appRoot,
+    nodeModules,
+    isLinked,
+    paths,
+    port
+  });
+
+  config = webpackPlugins(config, args, webpack);
+  config = externals(config, args, webpack);
+  config = entry(config, args, webpack);
   return plugins.reduce((store, plugin) => {
     const req = require(path.resolve(pluginsFolder, plugin, 'plugin'));
-    return req(config, options, webpack) || config;
+    return req(config, args, webpack) || config;
   }, config);
 };
