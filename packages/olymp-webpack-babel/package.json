@@ -9,7 +9,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "babel-loader": "^8.0.0-beta.0",
+    "babel-loader": "^7.1.2",
     "cache-loader": "^1.2.0",
     "extract-hoc": "0.0.5",
     "olymp-babel": "^20.2.5",
