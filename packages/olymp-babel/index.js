@@ -63,7 +63,7 @@ module.exports = ({ isLibrary, isDev, isFlowEnabled }) => ({
       require('@babel/plugin-transform-runtime').default,
       isLibrary
         ? {
-            polyfill: false,
+            polyfill: true,
             regenerator: false,
           }
         : {
