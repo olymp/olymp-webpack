@@ -6,8 +6,27 @@
  */
 
 module.exports = ({ isLibrary, isDev, isFlowEnabled }) => ({
+  passPerPreset: true,
   presets: [
     [
+      {
+        plugins: [
+          // Polyfills the runtime needed for async/await and generators
+          [
+            require('@babel/plugin-transform-runtime').default,
+            isLibrary
+              ? {
+                  polyfill: true,
+                  regenerator: false,
+                }
+              : {
+                  helpers: false,
+                  polyfill: false,
+                  regenerator: true,
+                },
+          ],
+        ],
+      },
       // Latest stable ECMAScript features
       require('@babel/preset-env').default,
       {
@@ -58,20 +77,6 @@ module.exports = ({ isLibrary, isDev, isFlowEnabled }) => ({
         useBuiltIns: true,
       },
     ],
-    // Polyfills the runtime needed for async/await and generators
-    /* [
-      require('@babel/plugin-transform-runtime').default,
-      isLibrary
-        ? {
-            polyfill: true,
-            regenerator: false,
-          }
-        : {
-            helpers: false,
-            polyfill: false,
-            regenerator: true,
-          },
-    ],*/
     !isDev && [
       // Remove PropTypes from production build
       require('babel-plugin-transform-react-remove-prop-types').default,
