@@ -1,78 +1,78 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-module.exports = ({ isLibrary, isDev, isFlowEnabled }) => ({
+module.exports = ({ isLibrary, isDev, isFlowEnabled, transform }) => ({
   presets: [
-    // Latest stable ECMAScript features
     [
-      require('@babel/preset-env').default,
+      '@babel/preset-env',
       {
-        // `entry` transforms `@babel/polyfill` into individual requires for
-        // the targeted browsers. This is safer than `usage` which performs
-        // static code analysis to determine what's required.
-        // This is probably a fine default to help trim down bundles when
-        // end-users inevitably import '@babel/polyfill'.
-        useBuiltIns: isLibrary ? 'usage' : 'entry',
-        // Do not transform modules to CJS
+        useBuiltIns: false, // isLibrary ? 'usage' : 'entry',
         modules: isLibrary ? 'commonjs' : false,
       },
     ],
     [
-      require('@babel/preset-react').default,
+      '@babel/preset-react',
       {
-        // Adds component stack to warning messages
-        // Adds __self attribute to JSX which React will use for some warnings
         development: !!isDev,
       },
     ],
-    '@babel/typescript',
+    //  '@babel/typescript',
   ].filter(Boolean),
   plugins: [
-    // Necessary to include regardless of the environment because
-    // in practice some other transforms (such as object-rest-spread)
-    // don't work without it: https://github.com/babel/babel/issues/7215
-    require('@babel/plugin-transform-modules-commonjs').default,
-    require('@babel/plugin-transform-destructuring').default,
-    // class { handleClick = () => { } }
-    require('@babel/plugin-proposal-decorators').default,
-    [require('@babel/plugin-proposal-class-properties'), { loose: true }],
-    // The following two plugins use Object.assign directly, instead of Babel's
-    // extends helper. Note that this assumes `Object.assign` is available.
-    // { ...todo, completed: true }
+    '@babel/plugin-transform-runtime',
+    '@babel/plugin-transform-modules-commonjs',
+    '@babel/plugin-transform-destructuring',
+    '@babel/plugin-proposal-decorators',
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
     [
-      require('@babel/plugin-proposal-object-rest-spread').default,
+      '@babel/plugin-proposal-object-rest-spread',
       {
         useBuiltIns: true,
       },
     ],
-    // Transforms JSX
     [
-      require('@babel/plugin-transform-react-jsx').default,
+      '@babel/plugin-transform-react-jsx',
       {
         useBuiltIns: true,
       },
     ],
     !isDev && [
-      // Remove PropTypes from production build
-      require('babel-plugin-transform-react-remove-prop-types').default,
+      'babel-plugin-transform-react-remove-prop-types',
       {
         removeImport: true,
       },
     ],
-    // function* () { yield 42; yield 43; }
     [
-      require('@babel/plugin-transform-regenerator').default,
+      '@babel/plugin-transform-regenerator',
       {
-        // Async functions are converted to generators by @babel/preset-env
         async: false,
       },
     ],
-    // Adds syntax support for import()
-    require('@babel/plugin-syntax-dynamic-import').default,
-    require('@babel/plugin-transform-shorthand-properties').default,
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-transform-shorthand-properties',
+    'lodash',
+    ['import', { libraryName: 'antd', style: true }],
+    [
+      'transform-imports',
+      Object.assign({}, transform || {}, {
+        antd: {
+          transform: 'antd/lib/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
+        'date-fns': {
+          transform: 'date-fns/${member}',
+          preventFullImport: true,
+          camelCase: true,
+        },
+        'olymp-icons': {
+          transform: 'olymp-icons/lib/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
+        icon88: {
+          transform: 'icon88/lib/${member}',
+          kebabCase: true,
+          preventFullImport: true,
+        },
+      }),
+    ],
   ].filter(Boolean),
 });
