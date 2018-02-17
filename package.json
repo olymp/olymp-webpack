@@ -1,5 +1,8 @@
 {
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "version": "15.2.8",
   "name": "olymp-webpack",
   "description": "",
@@ -11,7 +14,7 @@
     "lb": "lerna bootstrap",
     "li": "lerna exec --concurrency 1 -- npm i",
     "lu": "lerna exec --concurrency 1 -- npm-check -u",
-    "lc": "del 'packages/*/*.js'"
+    "lc": "del 'packages/*/package-lock.json' && del 'packages/*/node_modules'"
   },
   "engines": {},
   "repository": {
