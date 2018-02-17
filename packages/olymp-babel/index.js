@@ -1,14 +1,19 @@
 module.exports = ({ isLibrary, isDev, isFlowEnabled, transform }) => ({
   presets: [
     [
-      '@babel/preset-env',
+      'env',
       {
-        useBuiltIns: false, // isLibrary ? 'usage' : 'entry',
         modules: isLibrary ? 'commonjs' : false,
+        loose: true,
+        targets: { node: 'current', browsers: ['last 2 versions'] },
+        es2015: {
+          modules: isLibrary ? 'commonjs' : false,
+          loose: true,
+        },
       },
     ],
     [
-      '@babel/preset-react',
+      'react',
       {
         development: !!isDev,
       },
@@ -16,42 +21,19 @@ module.exports = ({ isLibrary, isDev, isFlowEnabled, transform }) => ({
     //  '@babel/typescript',
   ].filter(Boolean),
   plugins: [
-    '@babel/plugin-transform-runtime',
-    '@babel/plugin-transform-modules-commonjs',
-    '@babel/plugin-transform-destructuring',
-    '@babel/plugin-proposal-decorators',
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    [
-      '@babel/plugin-proposal-object-rest-spread',
-      {
-        useBuiltIns: true,
-      },
-    ],
-    [
-      '@babel/plugin-transform-react-jsx',
-      {
-        useBuiltIns: true,
-      },
-    ],
-    !isDev && [
-      'babel-plugin-transform-react-remove-prop-types',
-      {
-        removeImport: true,
-      },
-    ],
-    [
-      '@babel/plugin-transform-regenerator',
-      {
-        async: false,
-      },
-    ],
-    '@babel/plugin-syntax-dynamic-import',
-    '@babel/plugin-transform-shorthand-properties',
+    'transform-runtime',
+    'syntax-dynamic-import',
+    'transform-decorators-legacy',
+    'transform-object-rest-spread',
+    'transform-class-properties',
+    'transform-object-rest-spread',
+    'transform-react-constant-elements',
+    'transform-react-pure-class-to-function',
     'lodash',
     ['import', { libraryName: 'antd', style: true }],
     [
       'transform-imports',
-      Object.assign({}, transform || {}, {
+      {
         antd: {
           transform: 'antd/lib/${member}',
           kebabCase: true,
@@ -67,12 +49,7 @@ module.exports = ({ isLibrary, isDev, isFlowEnabled, transform }) => ({
           kebabCase: true,
           preventFullImport: true,
         },
-        icon88: {
-          transform: 'icon88/lib/${member}',
-          kebabCase: true,
-          preventFullImport: true,
-        },
-      }),
+      },
     ],
   ].filter(Boolean),
 });
