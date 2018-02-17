@@ -12,12 +12,7 @@ module.exports = ({ isLibrary, isDev, isFlowEnabled, transform }) => ({
         },
       },
     ],
-    [
-      'react',
-      {
-        development: !!isDev,
-      },
-    ],
+    'react',
     //  '@babel/typescript',
   ].filter(Boolean),
   plugins: [
