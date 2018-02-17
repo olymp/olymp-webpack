@@ -16,7 +16,11 @@ const { packages } = require(path.resolve(root, 'lerna.json'));
 
 const src = [];
 packages.forEach(x => {
+  src.push(`${root}/${x}*/*.tsx`);
+  src.push(`${root}/${x}*/*.ts`);
   src.push(`${root}/${x}*/*.es6`);
+  src.push(`!${root}/${x}*/*.d.ts`);
+  src.push(`!${root}/${x}*/*.d.tsx`);
   src.push(`!${root}/${x}/node_modules/**/*`);
   src.push(`!${root}/${x}/node_modules/**`);
   src.push(`!${root}/${x}/node_modules`);
