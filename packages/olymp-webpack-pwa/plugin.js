@@ -7,14 +7,17 @@ const path = require('path');
 
 module.exports = (
   config,
-  { isWeb, isProd, serverMode, appRoot, folder, target }
+  { isWeb, isProd, serverMode, appRoot, folder, target },
+  webpack
 ) => {
-  config.plugins.push({
-    'process.env.SERVER_MODE': `${serverMode}`,
-    'process.env.IS_SERVERLESS': `${serverMode === 'serverless'}`,
-    'process.env.IS_SSR': `${serverMode === 'ssr'}`,
-    'process.env.IS_STATIC': `${serverMode === 'static'}`,
-  });
+  config.plugins.push(
+    webpack.DefinePlugin({
+      'process.env.SERVER_MODE': `${serverMode}`,
+      'process.env.IS_SERVERLESS': `${serverMode === 'serverless'}`,
+      'process.env.IS_SSR': `${serverMode === 'ssr'}`,
+      'process.env.IS_STATIC': `${serverMode === 'static'}`,
+    })
+  );
 
   if (isWeb) {
     if (isProd) {
