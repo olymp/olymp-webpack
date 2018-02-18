@@ -9,7 +9,8 @@ module.exports = (config, options) => {
     appRoot,
     target,
     folder,
-    transform = {},
+    transform,
+    include,
   } = options;
   if (isProd && isWeb) {
     const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -50,7 +51,7 @@ module.exports = (config, options) => {
     );
   }
 
-  const babelOptions = require('olymp-babel')({ isDev });
+  const babelOptions = require('olymp-babel')({ isDev, transform });
 
   if (isProd) {
     // babelOptions.plugins.push('graphql-tag');
@@ -85,8 +86,6 @@ module.exports = (config, options) => {
         // path.resolve(appRoot, 'server'),
         // path.resolve(olympRoot, 'graphql'),
         resolve(appRoot, 'app'),
-        resolve(appRoot, 'electron'),
-        resolve(appRoot, 'server'),
       ],
     });
   } else {
@@ -109,13 +108,7 @@ module.exports = (config, options) => {
           options: babelOptions,
         },
       ],
-      include: [
-        // path.resolve(appRoot, 'server'),
-        // path.resolve(olympRoot, 'graphql'),
-        resolve(appRoot, 'app'),
-        resolve(appRoot, 'electron'),
-        resolve(appRoot, 'server'),
-      ],
+      include: include || [],
     });
   }
 

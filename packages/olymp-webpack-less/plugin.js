@@ -1,19 +1,16 @@
 const { resolve } = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const nodeModules = resolve(__dirname, 'node_modules');
-
 module.exports = (config, options) => {
   const {
     isProd,
     isWeb,
     isNode,
-    isLinked,
     modifyVars,
     isDev,
     appRoot,
     folder,
-    target
+    target,
   } = options;
 
   if (isWeb && isProd) {
@@ -21,7 +18,7 @@ module.exports = (config, options) => {
       new ExtractTextPlugin({
         allChunks: true,
         filename: isProd ? '[name].[hash].css' : '[name].css',
-      }),
+      })
     );
     config.module.rules.push({
       test: /\.(less|css)$/,
@@ -30,7 +27,12 @@ module.exports = (config, options) => {
           {
             loader: 'cache-loader',
             options: {
-              cacheDirectory: resolve(appRoot, folder, 'cache', `${target}-less`),
+              cacheDirectory: resolve(
+                appRoot,
+                folder,
+                'cache',
+                `${target}-less`
+              ),
             },
           },
           {
@@ -74,10 +76,6 @@ module.exports = (config, options) => {
       test: /\.(less|css)$/,
       loader: 'ignore-loader',
     });
-  }
-
-  if (isLinked) {
-    config.resolveLoader.modules.push(nodeModules);
   }
 
   return config;

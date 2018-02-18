@@ -7,19 +7,7 @@ const webpackPlugins = require('./plugins');
 
 const appRoot = process.cwd();
 
-const topFolder = path.resolve(__dirname, '..', '..');
-const isLinked = path.basename(topFolder) === 'packages';
-const nodeModules = isLinked
-  ? path.resolve(__dirname, '..', 'node_modules')
-  : path.resolve(__dirname, '..', '..');
-
 process.noDeprecation = true;
-const allPackages = !isLinked
-  ? []
-  : fs.readdirSync(topFolder).filter(x => x[0] !== '.');
-
-const pluginsFolder = !isLinked ? nodeModules : topFolder;
-
 module.exports = options => {
   let {
     mode,
@@ -63,36 +51,26 @@ module.exports = options => {
       version: isVerbose,
     },
     resolve: {
-      extensions: ['.js'],
-      modules: [
+      extensions: ['.js', '.less'],
+      modules: ['node_modules', path.resolve(appRoot, 'app')],
+      /* modules: [
         path.resolve(appRoot, 'node_modules'),
         path.resolve(appRoot, 'app'),
-      ],
-      alias: {
-        __app__: path.resolve(__dirname, '..', 'noop'),
-        __server__: path.resolve(__dirname, '..', 'noop'),
-        __electron__: path.resolve(__dirname, '..', 'noop'),
-        __root__: appRoot,
-        ...Object.keys(paths || {}).reduce((obj, key) => {
-          // get all folders in src and create 'olymp-xxx' alias
-          if (path.isAbsolute(paths[key])) {
-            obj[key] = paths[key];
-          } else {
-            obj[key] = path.resolve(appRoot, paths[key]);
-          }
-          return obj;
-        }, {}),
-        ...allPackages.reduce((obj, item) => {
-          // get all folders in src and create 'olymp-xxx' alias
-          obj[item] = path.resolve(topFolder, item);
-          return obj;
-        }, {}),
-        ...alias,
-      },
+      ], */
+      alias: Object.assign(
+        {},
+        {
+          __app__: path.resolve(__dirname, '..', 'noop'),
+          __server__: path.resolve(__dirname, '..', 'noop'),
+          __electron__: path.resolve(__dirname, '..', 'noop'),
+          __root__: appRoot,
+        },
+        alias
+      ),
     },
-    resolveLoader: {
+    /* resolveLoader: {
       modules: [path.resolve(appRoot, 'node_modules')],
-    },
+    }, */
     module: {
       rules: [
         {
@@ -197,8 +175,6 @@ module.exports = options => {
     isServerless,
     isSSR,
     appRoot,
-    nodeModules,
-    isLinked,
     paths,
     port,
   });
@@ -207,7 +183,7 @@ module.exports = options => {
   config = externals(config, args, webpack);
   config = entry(config, args, webpack);
   return plugins.reduce((store, plugin) => {
-    const req = require(path.resolve(pluginsFolder, plugin, 'plugin'));
+    const req = require(`${plugin}/plugin`);
     return req(config, args, webpack) || config;
   }, config);
 };

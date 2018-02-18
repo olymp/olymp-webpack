@@ -11,16 +11,12 @@ module.exports = (
 ) => {
   if (isWeb) {
     if (isProd) {
-      const OfflinePlugin = require(resolve(
-        process.cwd(),
-        'node_modules',
-        'offline-plugin'
-      ));
+      const OfflinePlugin = require('offline-plugin');
       config.plugins.push(
         new HtmlWebpackPlugin({
           filename: 'offline.html',
           template: path.resolve(__dirname, 'serverless.js'),
-          inject: false
+          inject: false,
           /* minify: {
           removeComments: true,
           collapseWhitespace: true,
@@ -43,14 +39,14 @@ module.exports = (
           caches: {
             main: ['app.*.js', 'offline.html'],
             additional: [':externals:'],
-            optional: ['*.js']
+            optional: ['*.js'],
           },
           updateStrategy: 'all',
           ServiceWorker: {
             events: true,
-            navigateFallbackURL: '/offline.html'
+            navigateFallbackURL: '/offline.html',
           },
-          AppCache: false
+          AppCache: false,
         })
       );
     }
@@ -59,7 +55,7 @@ module.exports = (
         new HtmlWebpackPlugin({
           filename: 'index.html',
           template: path.resolve(__dirname, 'serverless.js'),
-          inject: false
+          inject: false,
           /* minify: {
           removeComments: true,
           collapseWhitespace: true,
@@ -78,15 +74,15 @@ module.exports = (
     config.plugins.push(
       new CopyWebpackPlugin([
         {
-          context: path.resolve(appRoot, 'node_modules', 'olymp', 'public'),
+          context: path.resolve('..' 'olymp', 'public'),
           from: '**/*',
-          to: path.resolve(appRoot, folder, target.split('-')[0])
+          to: path.resolve(appRoot, folder, target.split('-')[0]),
         },
         {
           context: path.resolve(appRoot, 'public'),
           from: '**/*',
-          to: path.resolve(appRoot, folder, target.split('-')[0])
-        }
+          to: path.resolve(appRoot, folder, target.split('-')[0]),
+        },
       ])
     );
   }
