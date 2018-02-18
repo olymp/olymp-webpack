@@ -1,33 +1,24 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "version": "15.2.8",
   "name": "olymp-webpack",
   "description": "",
   "scripts": {
-    "up": "npm-check -u",
+    "up": "yarn upgrade-interactive --latest",
     "init": "lerna init --independent",
+    "watch": "olymp-lerna watch",
     "lp": "lerna publish --registry=https://registry.npmjs.org/",
-    "lpf": "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
-    "lb": "lerna bootstrap",
-    "li": "lerna exec --concurrency 1 -- npm i",
-    "lu": "lerna exec --concurrency 1 -- npm-check -u",
-    "lc": "del 'packages/*/package-lock.json' && del 'packages/*/node_modules'"
+    "lpf":
+      "lerna publish --registry=https://registry.npmjs.org/ --force-publish",
+    "lc": "lerna exec --concurrency 1 -- del 'package-lock.json' 'node_modules'"
   },
   "engines": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/olymp/olymp-webpack.git"
   },
-  "keywords": [
-    "react",
-    "universal",
-    "javascript",
-    "express",
-    "webpack"
-  ],
+  "keywords": ["react", "universal", "javascript", "express", "webpack"],
   "author": "Benjamin Kniffler <bkniffler@me.com>",
   "contributors": [
     "Benjamin Kniffler <bkniffler@me.com>",
