@@ -2,17 +2,20 @@ const { resolve } = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = (config, options) => {
-  const {
-    isProd,
-    isWeb,
-    isNode,
-    modifyVars,
-    isDev,
-    appRoot,
-    folder,
-    target,
-  } = options;
-
+  const { isProd, isWeb, isNode, isDev, appRoot, folder, target } = options;
+  const modifyVars = Object.assign(
+    {},
+    {
+      'menu-collapsed-width': '64px',
+      'font-family-no-number':
+        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+      'font-family':
+        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+      'font-size-base': '15px',
+      'primary-color': '#8e44ad',
+    },
+    options.modifyVars || {}
+  );
   if (isWeb && isProd) {
     config.plugins.push(
       new ExtractTextPlugin({
