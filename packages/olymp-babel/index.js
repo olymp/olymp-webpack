@@ -1,4 +1,4 @@
-module.exports = ({ isLibrary, isDev, isFlowEnabled, transform }) => {
+module.exports = ({ isLibrary, isDev, isFlowEnabled, isTest, transform }) => {
   const plugins = [
     // Experimental macros support. Will be documented after it's had some time
     // in the wild.
