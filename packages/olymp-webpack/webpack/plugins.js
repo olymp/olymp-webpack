@@ -8,9 +8,6 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 module.exports = (
   config,
   {
-    isSSR,
-    isNetlify,
-    isServerless,
     isWeb,
     isNode,
     isElectron,
@@ -22,12 +19,12 @@ module.exports = (
     folder,
     target,
     env = {},
-    sharedEnv = {}
+    sharedEnv = {},
   }
 ) => {
   config.plugins = [
     new webpack.LoaderOptionsPlugin({
-      debug: isDev
+      debug: isDev,
     }),
     new webpack.DefinePlugin(
       Object.assign(
@@ -43,12 +40,10 @@ module.exports = (
         {
           'process.env.BUILD_ON': `"${new Date()}"`,
           'process.env.NODE_ENV': `"${isProd ? 'production' : 'development'}"`,
-          'process.env.IS_SSR': isSSR,
-          'process.env.IS_SERVERLESS': `${!isNetlify && isServerless}`,
           'process.env.IS_WEB': isWeb,
           'process.env.IS_NODE': isNode,
           'process.env.IS_ELECTRON': isElectron,
-          'process.env.PORT': `${port}`
+          'process.env.PORT': `${port}`,
         }
       )
     ),
@@ -56,7 +51,7 @@ module.exports = (
     // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
     new ProgressBarPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
     // new CheckerPlugin(),
   ];
 
@@ -83,7 +78,7 @@ module.exports = (
               : false,
             'process.env.CRASHREPORT_URL': process.env.CRASHREPORT_URL
               ? `"${process.env.CRASHREPORT_URL}"`
-              : false
+              : false,
           },
           Object.keys(sharedEnv).reduce((store, key) => {
             if (sharedEnv[key] === true || process.env[key]) {
@@ -103,13 +98,13 @@ module.exports = (
       new webpack.BannerPlugin({
         banner: 'require("source-map-support").install();',
         raw: true,
-        entryOnly: false
+        entryOnly: false,
       })
     );
     if (isDev && target !== 'lambda') {
       config.plugins.push(
         new StartServerPlugin({
-          name: 'app.js'
+          name: 'app.js',
           // nodeArgs: [`--inspect=${devPort + 1}`], // allow debugging
         })
       );
@@ -134,7 +129,7 @@ module.exports = (
     config.plugins.push(
       new AssetsPlugin({
         filename: 'assets.json',
-        path: path.resolve(process.cwd(), folder, target.split('-')[0])
+        path: path.resolve(process.cwd(), folder, target.split('-')[0]),
       })
     );
     config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
@@ -144,7 +139,7 @@ module.exports = (
       config.plugins.push(
         new BundleAnalyzerPlugin({
           reportFilename: './_report.html',
-          analyzerMode: 'static'
+          analyzerMode: 'static',
           // generateStatsFile: false,
         })
       );
@@ -156,7 +151,7 @@ module.exports = (
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
         name: 'app',
-        filename
+        filename,
         // minChunks: 2,
       })
     );

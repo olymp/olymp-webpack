@@ -9,16 +9,7 @@ const appRoot = process.cwd();
 
 process.noDeprecation = true;
 module.exports = options => {
-  let {
-    mode,
-    target,
-    port,
-    isSSR,
-    isServerless,
-    alias = {},
-    plugins = [],
-    paths,
-  } = options;
+  let { mode, target, port, alias = {}, plugins = [], paths } = options;
 
   const isDev = mode !== 'production';
   const isProd = mode === 'production';
@@ -28,9 +19,6 @@ module.exports = options => {
   const isServer = target === 'node' || target === 'lambda';
   const isWeb = !isServer && target !== 'node' && target !== 'electron-main';
   const isNode = isServer || isElectronMain;
-  const isNetlify = isSSR && isServerless;
-  isServerless = isServerless === true || isElectron;
-  isSSR = !isElectronMain && isSSR !== false && !isServerless;
   const folder = isDev ? '.dev' : '.dist';
 
   const isVerbose = true;
@@ -170,10 +158,7 @@ module.exports = options => {
     isElectron,
     isElectronMain,
     isElectronRenderer,
-    isNetlify,
     isNode,
-    isServerless,
-    isSSR,
     appRoot,
     paths,
     port,

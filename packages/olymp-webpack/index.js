@@ -15,7 +15,7 @@ const root = process.cwd();
 
 const pckgOlymp =
   jsonfile.readFileSync(path.resolve(root, 'package.json'), {
-    throws: false
+    throws: false,
   }) || {};
 const olymprc = merge(
   {
@@ -29,12 +29,12 @@ const olymprc = merge(
       'font-family':
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
       'font-size-base': '15px',
-      'primary-color': '#8e44ad'
-    }
+      'primary-color': '#8e44ad',
+    },
   },
   pckgOlymp.olymp || {},
   jsonfile.readFileSync(path.resolve(root, '.olymprc'), {
-    throws: false
+    throws: false,
   }) || {}
 );
 
@@ -54,8 +54,6 @@ exports.build = options => {
       return createConfig(
         Object.assign({}, olymprc, config, {
           mode: 'production',
-          isSSR: config.ssr,
-          isServerless: config.serverless
         })
       );
     })
@@ -89,18 +87,15 @@ exports.dev = options => {
   const watch = {
     aggregateTimeout: 300,
     poll: false,
-    ignored: /node_modules/
+    ignored: /node_modules/,
   };
 
-  const isServerless = options.filter(x => x.target === 'node').length === 0;
   const compiler = webpack(
     options.map(config =>
       createConfig(
         Object.assign({}, olymprc, config, {
           mode,
           port: config.port,
-          isSSR: !config.serverless && config.ssr !== false,
-          isServerless: config.serverless || isServerless
         })
       )
     )
@@ -127,7 +122,7 @@ exports.dev = options => {
       const proxy = config.proxy || {};
       const server = new WebpackDevServer(currentCompiler, {
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*',
         },
         proxy: proxy || {},
         watchOptions: watch,
@@ -151,8 +146,8 @@ exports.dev = options => {
           errors: true,
           errorDetails: true,
           warnings: false,
-          publicPath: false
-        }
+          publicPath: false,
+        },
       });
       console.log('WebpackDevServer listening to', config.port);
       server.listen(config.port);
