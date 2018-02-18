@@ -106,6 +106,7 @@ module.exports = ({ isLibrary, isDev, isFlowEnabled, isTest, transform }) => {
         ],
         // Adds syntax support for import()
         require.resolve('babel-plugin-syntax-dynamic-import'),
+        require.resolve('babel-plugin-transform-decorators-legacy'),
         require.resolve('babel-plugin-lodash'),
         [
           require.resolve('babel-plugin-import'),
