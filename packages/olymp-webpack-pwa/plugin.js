@@ -11,7 +11,7 @@ module.exports = (
   webpack
 ) => {
   config.plugins.push(
-    webpack.DefinePlugin({
+    new webpack.DefinePlugin({
       'process.env.SERVER_MODE': `${serverMode}`,
       'process.env.IS_SERVERLESS': `${serverMode === 'serverless'}`,
       'process.env.IS_SSR': `${serverMode === 'ssr'}`,
