@@ -1,19 +1,25 @@
 module.exports = ({ isLibrary, isDev, isFlowEnabled, transform }) => ({
+  passPerPreset: true,
   presets: [
-    [
-      'env',
-      {
-        modules: isLibrary ? 'commonjs' : false,
-        loose: true,
-        targets: { node: 'current', browsers: ['last 2 versions'] },
-        es2015: {
-          modules: isLibrary ? 'commonjs' : false,
-          loose: true,
-        },
-      },
-    ],
-    'react',
-    //  '@babel/typescript',
+    { plugins: ['transform-runtime'] },
+    {
+      passPerPreset: false,
+      presets: [
+        [
+          'env',
+          {
+            modules: isLibrary ? 'commonjs' : false,
+            loose: true,
+            targets: { node: 'current', browsers: ['last 2 versions'] },
+            es2015: {
+              modules: isLibrary ? 'commonjs' : false,
+              loose: true,
+            },
+          },
+        ],
+        'react',
+      ],
+    },
   ].filter(Boolean),
   plugins: [
     'transform-runtime',
